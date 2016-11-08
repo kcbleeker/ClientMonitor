@@ -77,7 +77,7 @@ function setupLobbyMonitor() {
 }
 
 function setupLogging() {
-    setTimeout(function(){
+    setInterval(function(){
         $("#log").animate({ scrollTop: $('#log').prop("scrollHeight")}, 1000);
     }, 60000);
 
