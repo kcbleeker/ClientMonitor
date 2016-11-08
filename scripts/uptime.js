@@ -60,6 +60,7 @@ function setupLobbyMonitor() {
         $("#lobby").addClass("up");
         console.log("lobbyConn:" + data);
         lobbyTimer = setTimeout(function () { $("#lobby").removeClass("up"); }, lobbyTimeoutMilliSec);
+        
     });
 
     lobbyConnection.disconnected(function () {
@@ -76,6 +77,10 @@ function setupLobbyMonitor() {
 }
 
 function setupLogging() {
+    setTimeout(function(){
+        $("#log").animate({ scrollTop: $('#log').prop("scrollHeight")}, 1000);
+    }, 60000);
+
     if (typeof console != "undefined")
         if (typeof console.log != 'undefined')
             console.olog = console.log;
@@ -84,7 +89,8 @@ function setupLogging() {
 
     console.log = function (message) {
         console.olog(message);
-        $('#log').append('<p>' + message + '</p>');
+        var timestamp = new Date().toLocaleString('en-ZA', options);
+        $('#log').append('<b>' + timestamp + ' => </b>' + '<div>' + message + '</div>');
     };
     console.error = console.debug = console.info = console.log
 }
