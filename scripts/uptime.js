@@ -25,7 +25,7 @@ function setupRouterMonitor() {
         var timestamp = new Date().toLocaleString('en-ZA', options);
         $("#routerUpdateTime").text(timestamp);
         $("#router").addClass("up");
-        console.log("Router Message:" + data);
+        console.log("Router Message: " + data);
         routerTimer = setTimeout(function () { $("#router").removeClass("up"); }, routerTimeoutMilliSec);
     });
 
@@ -58,7 +58,7 @@ function setupLobbyMonitor() {
         var timestamp = new Date().toLocaleString('en-ZA', options);
         $("#lobbyUpdateTime").text(timestamp);
         $("#lobby").addClass("up");
-        console.log("Lobby Message:" + data);
+        console.log("Lobby Message: " + data);
         lobbyTimer = setTimeout(function () { $("#lobby").removeClass("up"); }, lobbyTimeoutMilliSec);
         
     });
