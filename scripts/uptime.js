@@ -25,7 +25,7 @@ function setupRouterMonitor() {
         var timestamp = new Date().toLocaleString('en-ZA', options);
         $("#routerUpdateTime").text(timestamp);
         $("#router").addClass("up");
-        console.log("routerConn:" + data);
+        console.log("Router Message:" + data);
         routerTimer = setTimeout(function () { $("#router").removeClass("up"); }, routerTimeoutMilliSec);
     });
 
@@ -38,7 +38,7 @@ function setupRouterMonitor() {
     routerConnection.error(function (error) {
         $("#router").removeClass("up");
         $("#routerUpdateTime").text("ERROR");
-        console.log('Router SignalR error: ' + error)
+        console.log('Router SignalR Error: ' + error)
     });
 }
 
@@ -58,7 +58,7 @@ function setupLobbyMonitor() {
         var timestamp = new Date().toLocaleString('en-ZA', options);
         $("#lobbyUpdateTime").text(timestamp);
         $("#lobby").addClass("up");
-        console.log("lobbyConn:" + data);
+        console.log("Lobby Message:" + data);
         lobbyTimer = setTimeout(function () { $("#lobby").removeClass("up"); }, lobbyTimeoutMilliSec);
         
     });
@@ -72,7 +72,7 @@ function setupLobbyMonitor() {
     lobbyConnection.error(function (error) {
         $("#lobby").removeClass("up");
         $("#lobbyUpdateTime").text("ERROR");
-        console.log('Lobby SignalR error: ' + error)
+        console.log('Lobby SignalR Error: ' + error)
     });
 }
 
