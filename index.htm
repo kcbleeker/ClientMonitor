@@ -10,7 +10,7 @@
     <style>
         html {
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
-            overflow-y: hidden; 
+            overflow-y: scroll; 
             overflow-x: hidden; 
         }
         
@@ -32,9 +32,9 @@
             background: tomato;
             padding: 3px;
             width: 90%;
-            height: 22%;
+            height: 25%;
             margin-top: 5px;
-            line-height: 80px;
+            line-height:60px;
             color: white;
             font-weight: bold;
             font-size: 3em;
@@ -68,16 +68,18 @@
             padding: 5px;
             height:20%;
         }
-        h1{
-            padding:2px;
-            margin:1px;
+        header{
+           
+             font-weight: bold;
+            font-size: 2em;
+            text-align: center;
         }
     </style>
 </head>
 <body>
-    <h1>
+    <header>
         Client Uptime Monitor
-    </h1>
+    </header>
     <ul class="flex-container">
         <li id="router" class="flex-item">Router
            
