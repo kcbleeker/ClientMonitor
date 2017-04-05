@@ -4,15 +4,22 @@ var options = {
     hour12: false
 };
 
+var latencyTests = {};
+var chartKeys = {
+    "routerConnection": 1,
+    "lobbyConnection": 2
+}
+
 $(document).ready(function () {
     setupRouterMonitor();
     setupLobbyMonitor();
     setupLogging();
+    startCharts();
 });
 
 function setupRouterMonitor() {
     var routerTimeoutMilliSec = 35 * 1000;
-    //var url = "https://pd4router.installprogram.eu/pokerBabelFish";
+    // var url = "https://pt8router.installprogram.eu/pokerBabelFish";
     var url = "https://mppgs1mobile.valueactive.eu/pokerBabelFish";
     var routerConnection = $.connection(url);
     routerConnection.logging = true;
@@ -27,6 +34,7 @@ function setupRouterMonitor() {
         $("#router").addClass("up");
         console.log("Router Message: " + data);
         routerTimer = setTimeout(function () { $("#router").removeClass("up"); }, routerTimeoutMilliSec);
+        // testLatency(routerConnection, "routerConnection");
     });
 
     routerConnection.disconnected(function () {
@@ -40,11 +48,17 @@ function setupRouterMonitor() {
         $("#routerUpdateTime").text("ERROR");
         console.log('Router SignalR Error: ' + error)
     });
+
+    routerConnection.stateChanged(function (change) {
+        if (change.newState === $.signalR.connectionState.connected) {
+            testLatency(routerConnection, "routerConnection");
+        }
+    });
 }
 
 function setupLobbyMonitor() {
     var lobbyTimeoutMilliSec = 35 * 1000;
-    //var url = "https://pd4lobby.installprogram.eu/pokerBabelFish"
+    // var url = "https://pt8lobby.installprogram.eu/pokerBabelFish"
     var url = "https://mpplobby3mobile.valueactive.eu/pokerBabelFish";
     var lobbyConnection = $.connection(url);
     lobbyConnection.logging = true;
@@ -60,7 +74,7 @@ function setupLobbyMonitor() {
         $("#lobby").addClass("up");
         console.log("Lobby Message: " + data);
         lobbyTimer = setTimeout(function () { $("#lobby").removeClass("up"); }, lobbyTimeoutMilliSec);
-        
+        // testLatency(lobbyConnection, "lobbyConnection");
     });
 
     lobbyConnection.disconnected(function () {
@@ -74,11 +88,17 @@ function setupLobbyMonitor() {
         $("#lobbyUpdateTime").text("ERROR");
         console.log('Lobby SignalR Error: ' + error)
     });
+
+    lobbyConnection.stateChanged(function (change) {
+        if (change.newState === $.signalR.connectionState.connected) {
+            testLatency(lobbyConnection, "lobbyConnection");
+        }
+    });
 }
 
 function setupLogging() {
-    setInterval(function(){
-        $("#log").animate({ scrollTop: $('#log').prop("scrollHeight")}, 1000);
+    setInterval(function () {
+        $("#log").animate({ scrollTop: $('#log').prop("scrollHeight") }, 1000);
     }, 60000);
 
     if (typeof console != "undefined")
@@ -94,3 +114,73 @@ function setupLogging() {
     };
     console.error = console.debug = console.info = console.log
 }
+
+function testLatency(connection, name) {
+    var startTime = new Date().getTime();
+    latencyTests[name] = {
+        startTime: startTime,
+        endTime: 0
+    }
+    $.connection.transports._logic.pingServer(connection, "")
+        .done(() => {
+            latencyResult(name);
+        })
+        .fail(() => {
+            latencyFail(name);
+        });
+    setTimeout(() => {
+        testLatency(connection, name);
+    }, 10000);
+}
+
+function latencyResult(name) {
+    var endTime = new Date().getTime();
+    latencyTests[name].endTime = endTime;
+    var latency = (latencyTests[name].endTime - latencyTests[name].startTime) / 2;
+    var idx = chartKeys[name];
+    for (var i = 1; i < 10; i++) {
+        tableData[i][idx] = tableData[i + 1][idx];
+    }
+    tableData[10][idx] = latency;
+    drawChart();
+}
+
+function latencyFail(name) {
+    console.log("Latency test failed: " + name);
+}
+
+function startCharts() {
+    google.charts.load('current', { 'packages': ['corechart'] });
+    google.charts.setOnLoadCallback(drawChart);
+}
+
+var tableData = [
+    ["Item", "Router", "Lobby"],
+    ["1", 0, 0],
+    ["2", 0, 0],
+    ["3", 0, 0],
+    ["4", 0, 0],
+    ["5", 0, 0],
+    ["6", 0, 0],
+    ["7", 0, 0],
+    ["8", 0, 0],
+    ["9", 0, 0],
+    ["10", 0, 0]
+];
+
+function drawChart() {
+
+    // Create the data table.
+    var data = google.visualization.arrayToDataTable(tableData);
+
+    var options = {
+        title: 'Latency',
+        curveType: 'function',
+        legend: { position: 'bottom' }
+    };
+
+    var chart = new google.visualization.LineChart(document.getElementById('curve_chart'));
+
+    chart.draw(data, options);
+}
+
