@@ -1,17 +1,30 @@
 <html>
+
 <head>
     <meta name="mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-capable" content="yes" /> 
+    <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="viewport" content="initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no, width=device-width">
     <title>Client Uptime Monitor</title>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
     <script src="http://ajax.aspnetcdn.com/ajax/signalr/jquery.signalr-2.2.1.min.js"></script>
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
     <script src="scripts\uptime.js"></script>
     <style>
         html {
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
-            overflow-y: scroll; 
-            overflow-x: hidden; 
+            overflow-y: scroll;
+            overflow-x: hidden;
+        }
+        
+        .left {
+            float: left;
+            width: 50%;
+        }
+        
+        .right {
+            float: right;
+            width: 50%;
+            height: 48%;
         }
         
         .flex-container {
@@ -25,16 +38,17 @@
             display: -webkit-flex;
             display: flex;
             -webkit-flex-flow: row wrap;
+            flex-flow: row wrap;
             justify-content: space-around;
         }
         
         .flex-item {
             background: tomato;
-            padding: 3px;
+            padding-top: 15%;
             width: 90%;
-            height: 25%;
+            height: 30%;
             margin-top: 5px;
-            line-height:60px;
+            line-height: 60px;
             color: white;
             font-weight: bold;
             font-size: 3em;
@@ -52,7 +66,7 @@
             line-height: 50px;
             position: relative;
         }
-
+        
         .url {
             color: white;
             font-weight: normal;
@@ -60,39 +74,48 @@
             line-height: 10px;
             position: relative;
         }
-
-        #log{
+        
+        #log {
             border: 1px dotted black;
-            overflow-y: scroll; 
-            overflow-x: hidden; 
+            overflow-y: scroll;
+            overflow-x: hidden;
             padding: 5px;
-            height:20%;
+            height: 20%;
         }
-        header{
-           
-             font-weight: bold;
+        
+        header {
+            font-weight: bold;
             font-size: 2em;
             text-align: center;
         }
     </style>
 </head>
+
 <body>
     <header>
         Client Uptime Monitor
     </header>
-    <ul class="flex-container">
-        <li id="router" class="flex-item">Router
-           
-            <div class="time" id="routerUpdateTime">-</div>
-             <div class="url" id="routerUrl">-</div>
-        </li>
-        <li id="lobby" class="flex-item">Lobby
-            
-            <div class="time" id="lobbyUpdateTime">-</div>
-            <div class="url" id="lobbyUrl">-</div>
-        </li>
-    </ul>
-    <strong>Console Log:</strong>
-    <div id="log" style="overflow-y: scroll; overflow-x: hidden; height:40%;"></div>
+    <div class="left">
+        <ul class="flex-container">
+            <li id="router" class="flex-item">Router
+
+                <div class="time" id="routerUpdateTime">-</div>
+                <div class="url" id="routerUrl">-</div>
+            </li>
+            <li id="lobby" class="flex-item">Lobby
+
+                <div class="time" id="lobbyUpdateTime">-</div>
+                <div class="url" id="lobbyUrl">-</div>
+            </li>
+        </ul>
+    </div>
+    <div class="right">
+        <div id="curve_chart" style="width: 90%; height: 100%"></div>
+    </div>
+    <div>
+        <strong>Console Log:</strong>
+        <div id="log" style="overflow-y: scroll; overflow-x: hidden; height:40%;"></div>
+    </div>
 </body>
+
 </html>
