@@ -4,11 +4,12 @@ var options = {
     hour12: false
 };
 
-var latencyTests = {};
+var historyMinutes = 5;
 var chartKeys = {
-    "routerConnection": 1,
-    "lobbyConnection": 2
-}
+    "Router": 1,
+    "Lobby": 2
+};
+var latencyTests = {};
 
 $(document).ready(function () {
     setupRouterMonitor();
@@ -18,82 +19,51 @@ $(document).ready(function () {
 });
 
 function setupRouterMonitor() {
-    var routerTimeoutMilliSec = 35 * 1000;
-    // var url = "https://pt8router.installprogram.eu/pokerBabelFish";
     var url = "https://mppgs1mobile.valueactive.eu/pokerBabelFish";
-    var routerConnection = $.connection(url);
-    routerConnection.logging = true;
-    routerConnection.start();
-    $("#routerUpdateTime").text("Starting...");
-    $("#routerUrl").text(url);
-    var routerTimer = setTimeout(function () { $("#router").removeClass("up"); }, routerTimeoutMilliSec);
-    routerConnection.received(function (data) {
-        clearTimeout(routerTimer);
-        var timestamp = new Date().toLocaleString('en-ZA', options);
-        $("#routerUpdateTime").text(timestamp);
-        $("#router").addClass("up");
-        console.log("Router Message: " + data);
-        routerTimer = setTimeout(function () { $("#router").removeClass("up"); }, routerTimeoutMilliSec);
-        // testLatency(routerConnection, "routerConnection");
-    });
-
-    routerConnection.disconnected(function () {
-        setTimeout(function () {
-            routerConnection.start();
-        }, 5000); // Restart connection after 5 seconds.
-    });
-
-    routerConnection.error(function (error) {
-        $("#router").removeClass("up");
-        $("#routerUpdateTime").text("ERROR");
-        console.log('Router SignalR Error: ' + error)
-    });
-
-    routerConnection.stateChanged(function (change) {
-        if (change.newState === $.signalR.connectionState.connected) {
-            testLatency(routerConnection, "routerConnection");
-        }
-    });
+    setupMonitor("Router", "router", url);
 }
 
 function setupLobbyMonitor() {
-    var lobbyTimeoutMilliSec = 35 * 1000;
-    // var url = "https://pt8lobby.installprogram.eu/pokerBabelFish"
     var url = "https://mpplobby3mobile.valueactive.eu/pokerBabelFish";
-    var lobbyConnection = $.connection(url);
-    lobbyConnection.logging = true;
-    lobbyConnection.start();
-    $("#lobbyUpdateTime").text("Starting...");
-    $("#lobbyUrl").text(url);
-    var lobbyTimer = setTimeout(function () { $("#lobby").removeClass("up"); }, lobbyTimeoutMilliSec);
+    setupMonitor("Lobby", "lobby", url);
+}
 
-    lobbyConnection.received(function (data) {
-        clearTimeout(lobbyTimer);
+function setupMonitor(name, targetDivName, url) {
+    var timeoutMilliSec = 35 * 1000;
+    var connection = $.connection(url);
+    connection.logging = true;
+    connection.start();
+    $("#" + targetDivName + "UpdateTime").text("Starting...");
+    $("#" + targetDivName + "Url").text(url);
+    var timer = setTimeout(function () { $("#lobby").removeClass("up"); }, timeoutMilliSec);
+
+    connection.received(function (data) {
+        clearTimeout(timer);
         var timestamp = new Date().toLocaleString('en-ZA', options);
-        $("#lobbyUpdateTime").text(timestamp);
-        $("#lobby").addClass("up");
-        console.log("Lobby Message: " + data);
-        lobbyTimer = setTimeout(function () { $("#lobby").removeClass("up"); }, lobbyTimeoutMilliSec);
-        // testLatency(lobbyConnection, "lobbyConnection");
+        $("#" + targetDivName + "UpdateTime").text(timestamp);
+        $("#" + targetDivName).addClass("up");
+        console.log(name + " Message: " + data);
+        timer = setTimeout(function () { $("#" + targetDivName).removeClass("up"); }, timeoutMilliSec);
     });
 
-    lobbyConnection.disconnected(function () {
+    connection.disconnected(function () {
         setTimeout(function () {
-            lobbyConnection.start();
+            connection.start();
         }, 5000); // Restart connection after 5 seconds.
     });
 
-    lobbyConnection.error(function (error) {
-        $("#lobby").removeClass("up");
-        $("#lobbyUpdateTime").text("ERROR");
-        console.log('Lobby SignalR Error: ' + error)
+    connection.error(function (error) {
+        $("#" + targetDivName).removeClass("up");
+        $("#" + targetDivName + "UpdateTime").text("ERROR");
+        console.log(name + " SignalR Error: " + error)
     });
 
-    lobbyConnection.stateChanged(function (change) {
+    connection.stateChanged(function (change) {
         if (change.newState === $.signalR.connectionState.connected) {
-            testLatency(lobbyConnection, "lobbyConnection");
+            testLatency(connection, name);
         }
     });
+
 }
 
 function setupLogging() {
@@ -137,16 +107,25 @@ function latencyResult(name) {
     var endTime = new Date().getTime();
     latencyTests[name].endTime = endTime;
     var latency = (latencyTests[name].endTime - latencyTests[name].startTime) / 2;
-    var idx = chartKeys[name];
-    for (var i = 1; i < 10; i++) {
-        tableData[i][idx] = tableData[i + 1][idx];
-    }
-    tableData[10][idx] = latency;
-    drawChart();
+    chartAddLatency(name, latency);
 }
 
 function latencyFail(name) {
+    var endTime = new Date().getTime();
+    latencyTests[name].endTime = endTime;
+    var latency = 0;
+    chartAddLatency(name, latency)
     console.log("Latency test failed: " + name);
+}
+
+function chartAddLatency(name, latency) {
+    var idx = chartKeys[name];
+    var len = tableData.length - 1;
+    for (var i = 1; i < len; i++) {
+        tableData[i][idx] = tableData[i + 1][idx];
+    }
+    tableData[len][idx] = latency;
+    drawChart();
 }
 
 function startCharts() {
@@ -154,22 +133,7 @@ function startCharts() {
     google.charts.setOnLoadCallback(drawChart);
 }
 
-var tableData = [
-    ["Item", "Router", "Lobby"],
-    ["1", 0, 0],
-    ["2", 0, 0],
-    ["3", 0, 0],
-    ["4", 0, 0],
-    ["5", 0, 0],
-    ["6", 0, 0],
-    ["7", 0, 0],
-    ["8", 0, 0],
-    ["9", 0, 0],
-    ["10", 0, 0]
-];
-
 function drawChart() {
-
     // Create the data table.
     var data = google.visualization.arrayToDataTable(tableData);
 
@@ -184,3 +148,9 @@ function drawChart() {
     chart.draw(data, options);
 }
 
+var tableData = [
+    ["Item", "Router", "Lobby"]
+];
+for (var i = 1; i < historyMinutes * 6; i++) {
+    tableData.push([i.toString(), 0, 0]);
+}
