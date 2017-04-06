@@ -10,6 +10,7 @@ var chartKeys = {
     "Lobby": 2
 };
 var latencyTests = {};
+var chart;
 
 $(document).ready(function () {
     setupRouterMonitor();
@@ -81,8 +82,25 @@ function setupLogging() {
         console.olog(message);
         var timestamp = new Date().toLocaleString('en-ZA', options);
         $('#log').append('<b>' + timestamp + ' => </b>' + '<div>' + message + '</div>');
+        cleanupLog();
     };
     console.error = console.debug = console.info = console.log
+}
+
+function cleanupLog() {
+    let Bs = $('#log').children("b"),
+        DIVs = $('#log').children("div"),
+        maxLength = 200;
+    if (Bs.length > maxLength) {
+        for (var i = 0; i < Bs.length - maxLength; i += 1) {
+            Bs[0].remove();
+        }
+    }
+    if (DIVs.length > maxLength) {
+        for (var i = 0; i < DIVs.length - maxLength; i += 1) {
+            DIVs[0].remove();
+        }
+    }
 }
 
 function testLatency(connection, name) {
@@ -130,7 +148,11 @@ function chartAddLatency(name, latency) {
 
 function startCharts() {
     google.charts.load('current', { 'packages': ['corechart'] });
-    google.charts.setOnLoadCallback(drawChart);
+    google.charts.setOnLoadCallback(createChart);
+}
+
+function createChart() {
+    chart = new google.visualization.LineChart(document.getElementById('curve_chart'));
 }
 
 function drawChart() {
@@ -142,9 +164,6 @@ function drawChart() {
         curveType: 'function',
         legend: { position: 'bottom' }
     };
-
-    var chart = new google.visualization.LineChart(document.getElementById('curve_chart'));
-
     chart.draw(data, options);
 }
 
