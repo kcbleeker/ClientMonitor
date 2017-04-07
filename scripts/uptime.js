@@ -42,6 +42,7 @@ function setupMonitor(name, targetDivName, url) {
         clearTimeout(timer);
         var timestamp = new Date().toLocaleString('en-ZA', options);
         $("#" + targetDivName + "UpdateTime").text(timestamp);
+        $("#" + targetDivName).removeClass("down");
         $("#" + targetDivName).addClass("up");
         console.log(name + " Message: " + data);
         timer = setTimeout(function () { $("#" + targetDivName).removeClass("up"); }, timeoutMilliSec);
@@ -55,6 +56,7 @@ function setupMonitor(name, targetDivName, url) {
 
     connection.error(function (error) {
         $("#" + targetDivName).removeClass("up");
+        $("#" + targetDivName).addClass("down");
         $("#" + targetDivName + "UpdateTime").text("ERROR");
         console.log(name + " SignalR Error: " + error)
     });

@@ -1,3 +1,7 @@
+* {
+    box-sizing: border-box;
+}
+
 html {
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
     overflow-y: hidden;
@@ -6,51 +10,82 @@ html {
     color: white;
 }
 
-.left {
-    float: left;
-    width: 50%;
-}
-
-.right {
-    float: right;
-    width: 50%;
-    height: 48%;
-}
-
-.flex-container {
-    padding: 0;
-    margin: 0;
-    margin-bottom: 8px;
-    list-style: none;
-    display: -webkit-box;
-    display: -moz-box;
-    display: -ms-flexbox;
-    display: -webkit-flex;
-    display: flex;
-    -webkit-flex-flow: row wrap;
-    flex-flow: row wrap;
-    justify-content: space-around;
-}
-
-.flex-item {
-    background: tomato;
-    padding-top: 15%;
-    width: 90%;
-    height: 30%;
-    margin-top: 5px;
-    line-height: 60px;
+header {
+    font-weight: bold;
+    font-size: 2em;
+    text-align: center;
     color: white;
+    padding-bottom: 10px;
+}
+
+.wrapper {
+    max-width: 100%;
+    margin: 0 auto;
+}
+
+.wrapper>div {
+    border: 1px solid whitesmoke;
+    border-radius: 5px;
+    background-color: black;
+    padding: 1em;
+}
+
+.wrapper {
+    display: grid;
+    height: 80%;
+    /*grid-template-columns: repeat(3, 1fr);*/
+    grid-template-columns: 49% 49%;
+    grid-gap: 5px;
+    grid-template-rows: 50%, 50%;
+}
+
+.one {
+    grid-column: 1;
+    grid-row: 1;
+    min-height: 400px;
+}
+
+.two {
+    grid-column: 2;
+    grid-row: 1;
+    min-height: 400px;
+}
+
+.three {
+    grid-column: 1;
+    grid-row: 2;
+    min-height: 400px;
+}
+
+.four {
+    grid-column: 2;
+    grid-row: 2;
+    min-height: 400px;
+}
+
+#log {
+    overflow-y: scroll;
+    overflow-x: hidden;
+    padding: 5px;
+    color: white;
+}
+
+.wrapper>.down {
+    background: tomato !important;
+}
+
+.wrapper>.up {
+    background: mediumseagreen !important;
+}
+
+#lobby,
+#router {
     font-weight: bold;
     font-size: 3em;
     text-align: center;
 }
 
-.flex-item.up {
-    background: mediumseagreen;
-}
-
 .time {
-    color: white;
     font-weight: normal;
     font-size: .5em;
     line-height: 50px;
@@ -58,25 +93,8 @@ html {
 }
 
 .url {
-    color: white;
     font-weight: normal;
     font-size: .27em;
     line-height: 10px;
     position: relative;
-}
-
-#log {
-    border: 1px dotted black;
-    overflow-y: scroll;
-    overflow-x: hidden;
-    padding: 5px;
-    height: 20%;
-    color: white;
-}
-
-header {
-    font-weight: bold;
-    font-size: 2em;
-    text-align: center;
-    color: white;
 }
