@@ -33,34 +33,29 @@ header {
 .wrapper {
     display: grid;
     height: 80%;
-    /*grid-template-columns: repeat(3, 1fr);*/
-    grid-template-columns: 49% 49%;
+    grid-template-rows: 45vh 45vh;
+    grid-template-columns: 49vw 49vw;
     grid-gap: 5px;
-    grid-template-rows: 50%, 50%;
 }
 
 .one {
     grid-column: 1;
     grid-row: 1;
-    min-height: 400px;
 }
 
 .two {
     grid-column: 2;
     grid-row: 1;
-    min-height: 400px;
 }
 
 .three {
     grid-column: 1;
     grid-row: 2;
-    min-height: 400px;
 }
 
 .four {
     grid-column: 2;
     grid-row: 2;
-    min-height: 400px;
 }
 
 #log {
