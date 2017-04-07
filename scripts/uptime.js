@@ -168,8 +168,8 @@ function drawChart() {
 }
 
 var tableData = [
-    ["Item", "Router", "Lobby"]
+    ["Item", "Router", "Lobby", "Threshold"]
 ];
 for (var i = 1; i < historyMinutes * 6; i++) {
-    tableData.push([i.toString(), 0, 0]);
+    tableData.push([i.toString(), 0, 0, 200]);
 }
