@@ -118,9 +118,14 @@ function testLatency(connection, name) {
         .fail(() => {
             latencyFail(name);
         });
-    setTimeout(() => {
+    var timer = setTimeout(() => {
         testLatency(connection, name);
     }, 10000);
+    connection.stateChanged(function (change) {
+        if (change.newState !== $.signalR.connectionState.connected) {
+             clearTimeout(timer);
+        }
+    });
 }
 
 function latencyResult(name) {
