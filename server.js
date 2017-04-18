@@ -15,14 +15,16 @@ var server = http.createServer(function (req, res) {
 });
 
 server.listen(process.env.PORT || 8080);
-
+//me = me + (process.env.PORT || 8080);
+console.log("opened me? ", me);
 // RUN THE BROWSER
 function startMonitor() {
 	var driver = require('node-phantom-simple');
 	driver.create({ path: require('phantomjs').path, parameters: { 'web-security': 'false' } }, function (err, browser) {
 		return browser.createPage(function (err, page) {
 			return page.open(me, function (err, status) {
-				// console.log("opened site? ", status);
+				console.log("opened site? ", status);
+
 				setTimeout(function () {
 					browser.exit();
 					startMonitor();
