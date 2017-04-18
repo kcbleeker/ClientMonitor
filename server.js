@@ -18,13 +18,13 @@ var finalhandler = require('finalhandler');
 var serveStatic = require('serve-static');
 var serve = serveStatic("./app");
 var server = http.createServer(function (req, res) {
-    var done = finalhandler(req, res);
-    serve(req, res, done);
-//     res.writeHead(200, { 'Content-Type': 'text/html' });
-//     res.end('Hello from Poker Node Server... :)');
-    
+	var done = finalhandler(req, res);
+	serve(req, res, done);
+	//     res.writeHead(200, { 'Content-Type': 'text/html' });
+	//     res.end('Hello from Poker Node Server... :)');
+
 });
-server.listen(80);
+server.listen(process.env.PORT || 8080);
 
 
 
