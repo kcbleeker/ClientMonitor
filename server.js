@@ -14,8 +14,6 @@ var server = http.createServer(function (req, res) {
 	serve(req, res, done);
 });
 
-var nonInts = new RegExp(/[^0-9]/g);
-var envPort = process.env.PORT;
 if (process.env.PORT === undefined) {
 	port = 8089;
 	server.listen(port);
@@ -41,4 +39,4 @@ function startMonitor() {
 		});
 	});
 }
-// startMonitor();
+startMonitor();
