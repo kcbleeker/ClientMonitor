@@ -16,14 +16,15 @@ var me = "http://127.0.0.1/index.htm";
 var http = require('http');
 var finalhandler = require('finalhandler');
 var serveStatic = require('serve-static');
-var serve = serveStatic("wwwroot");
-http.createServer(function (req, res) {
+var serve = serveStatic("./wwwroot");
+var server = http.createServer(function (req, res) {
     var done = finalhandler(req, res);
     serve(req, res, done);
 //     res.writeHead(200, { 'Content-Type': 'text/html' });
 //     res.end('Hello from Poker Node Server... :)');
     
-}).listen(process.env.PORT || 8080);
+});
+server.listen(80);
 
 
 
