@@ -16,13 +16,14 @@ var server = http.createServer(function (req, res) {
 
 var nonInts = new RegExp(/[^0-9]/g);
 var envPort = process.env.PORT;
-if (process.env.PORT === undefined || nonInts.test(envPort)) {
+if (process.env.PORT === undefined) {
 	port = 8089;
+	server.listen(port);
 }
 else {
-	port = envPort;
+	port = 80;
+	server.listen(process.env.PORT);
 }
-server.listen(port);
 me += ":" + port.toString() + "/";
 console.log("URL: ", me);
 // RUN THE BROWSER
