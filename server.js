@@ -2,16 +2,34 @@ var me = "http://127.0.0.1/index.htm";
 
 // HOST THE MONITOR
 
+// var http = require('http');
+// var finalhandler = require('finalhandler');
+// var serveStatic = require('serve-static');
+// var serve = serveStatic("./wwwroot");
+// var server = http.createServer(function (req, res) {
+// 	var done = finalhandler(req, res);
+// 	serve(req, res, done);
+// 	// console.log("Page loaded remotely");
+// });
+// server.listen(80);
+
 var http = require('http');
 var finalhandler = require('finalhandler');
 var serveStatic = require('serve-static');
-var serve = serveStatic("./wwwroot");
+var serve = serveStatic("./app");
 var server = http.createServer(function (req, res) {
 	var done = finalhandler(req, res);
 	serve(req, res, done);
-	// console.log("Page loaded remotely");
+	//     res.writeHead(200, { 'Content-Type': 'text/html' });
+	//     res.end('Hello from Poker Node Server... :)');
+
 });
-server.listen(80);
+server.listen(process.env.PORT || 8080);
+
+
+
+
+
 
 // RUN THE BROWSER
 function startMonitor() {

@@ -3,7 +3,12 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
-  "dependencies": {},
+  "dependencies": {
+    "finalhandler": "^1.0.1",
+    "node-phantom-simple": "^2.2.4",
+    "phantomjs": "^2.1.7",
+    "serve-static": "^1.12.1"
+  },
   "devDependencies": {
     "finalhandler": "^1.0.1",
     "node-phantom-simple": "^2.2.4",
@@ -22,5 +27,8 @@
   "bugs": {
     "url": "https://github.com/bluntspoon/ClientMonitor/issues"
   },
-  "homepage": "https://github.com/bluntspoon/ClientMonitor#readme"
+  "homepage": "https://github.com/bluntspoon/ClientMonitor#readme",
+  "engines": {
+    "node": "~0.10.0 || ~4.2.0"
+  }
 }
