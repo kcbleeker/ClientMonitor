@@ -22,5 +22,8 @@
   "bugs": {
     "url": "https://github.com/bluntspoon/ClientMonitor/issues"
   },
-  "homepage": "https://github.com/bluntspoon/ClientMonitor#readme"
+  "homepage": "https://github.com/bluntspoon/ClientMonitor#readme",
+  "engines": {
+    "node": "~0.10.0 || ~4.2.0"
+  }
 }
