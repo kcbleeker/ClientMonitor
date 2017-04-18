@@ -1,18 +1,6 @@
 var me = "http://127.0.0.1/";
 
 // HOST THE MONITOR
-
-// var http = require('http');
-// var finalhandler = require('finalhandler');
-// var serveStatic = require('serve-static');
-// var serve = serveStatic("./wwwroot");
-// var server = http.createServer(function (req, res) {
-// 	var done = finalhandler(req, res);
-// 	serve(req, res, done);
-// 	// console.log("Page loaded remotely");
-// });
-// server.listen(80);
-
 var http = require('http');
 var finalhandler = require('finalhandler');
 var serveStatic = require('serve-static');
@@ -26,12 +14,7 @@ var server = http.createServer(function (req, res) {
 
 });
 
-server.listen(process.env.PORT || 8089);
-
-
-
-
-
+server.listen(process.env.PORT || 8080);
 
 // RUN THE BROWSER
 function startMonitor() {
