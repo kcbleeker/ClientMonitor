@@ -12,20 +12,17 @@ var server = http.createServer(function (req, res) {
 	}
 	var done = finalhandler(req, res);
 	serve(req, res, done);
-
 });
 
 var nonInts = new RegExp(/[^0-9]/g);
-var envPort = process.env.PORT || 0;
-var containsNonNumeric = nonInts.test(envPort);
-if (containsNonNumeric || !process.env.PORT) {
+var envPort = process.env.PORT;
+if (process.env.PORT === undefined || nonInts.test(envPort)) {
 	port = 8089;
-	server.listen(port);
 }
 else {
 	port = envPort;
-	server.listen(envPort);
 }
+server.listen(port);
 me += ":" + port.toString() + "/";
 console.log("URL: ", me);
 // RUN THE BROWSER
