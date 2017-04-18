@@ -3,8 +3,10 @@ var options = {
     hour: 'numeric', minute: 'numeric', second: 'numeric',
     hour12: false
 };
+var myname = "UKMon";
+var postURL = "http://ukmon.azurewebsites.net:8080";
 
-var historyMinutes = 5;
+var historyMinutes = 30;
 var chartKeys = {
     "Router": 1,
     "Lobby": 2
@@ -120,10 +122,10 @@ function testLatency(connection, name) {
         });
     var timer = setTimeout(() => {
         testLatency(connection, name);
-    }, 10000);
+    }, 60000);
     connection.stateChanged(function (change) {
         if (change.newState !== $.signalR.connectionState.connected) {
-             clearTimeout(timer);
+            clearTimeout(timer);
         }
     });
 }
@@ -132,6 +134,7 @@ function latencyResult(name) {
     var endTime = new Date().getTime();
     latencyTests[name].endTime = endTime;
     var latency = (latencyTests[name].endTime - latencyTests[name].startTime) / 2;
+    logLatency(name, latency);
     chartAddLatency(name, latency);
 }
 
@@ -174,9 +177,17 @@ function drawChart() {
     chart.draw(data, options);
 }
 
+function logLatency(name, latency) {
+    $.post(postURL, {
+        servername: myname,
+        connectionname: name,
+        latency: latency
+    });
+}
+
 var tableData = [
     ["Item", "Router", "Lobby", "Threshold"]
 ];
-for (var i = 1; i < historyMinutes * 6; i++) {
+for (var i = 1; i < historyMinutes; i++) {
     tableData.push([i.toString(), 0, 0, 200]);
 }
