@@ -1,0 +1,26 @@
+{
+  "name": "clientmonitor",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "dependencies": {},
+  "devDependencies": {
+    "finalhandler": "^1.0.1",
+    "node-phantom-simple": "^2.2.4",
+    "phantomjs": "^2.1.7",
+    "serve-static": "^1.12.1"
+  },
+  "scripts": {
+    "start": "node server"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bluntspoon/ClientMonitor.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/bluntspoon/ClientMonitor/issues"
+  },
+  "homepage": "https://github.com/bluntspoon/ClientMonitor#readme"
+}
