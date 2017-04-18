@@ -1,4 +1,4 @@
-var me = "http://127.0.0.1/index.htm";
+var me = "http://127.0.0.1:8080/index.htm";
 
 // HOST THE MONITOR
 
@@ -11,7 +11,7 @@ var server = http.createServer(function (req, res) {
 	serve(req, res, done);
 	// console.log("Page loaded remotely");
 });
-server.listen(80);
+server.listen(8080);
 
 // RUN THE BROWSER
 function startMonitor() {
