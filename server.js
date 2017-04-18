@@ -42,4 +42,4 @@ function startMonitor() {
 		});
 	});
 }
-//startMonitor();
+startMonitor();
