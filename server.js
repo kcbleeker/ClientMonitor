@@ -1,4 +1,4 @@
-var me = "http://127.0.0.1/index.htm";
+var me = "http://127.0.0.1/";
 
 // HOST THE MONITOR
 
@@ -18,13 +18,14 @@ var finalhandler = require('finalhandler');
 var serveStatic = require('serve-static');
 var serve = serveStatic("./app");
 var server = http.createServer(function (req, res) {
+	if (req.url === "/") {
+		req.url = "index.htm";
+	}
 	var done = finalhandler(req, res);
 	serve(req, res, done);
-	//     res.writeHead(200, { 'Content-Type': 'text/html' });
-	//     res.end('Hello from Poker Node Server... :)');
 
 });
-server.listen(process.env.PORT || 8080);
+server.listen(process.env.PORT || 8089);
 
 
 
