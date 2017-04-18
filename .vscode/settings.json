@@ -1,6 +1,6 @@
 // Project settings
 {
-	"window.title": "Poker Web Client - ${dirty}${activeEditorName}${separator}${rootName}${separator}${appName}",
+	"window.title": "${dirty}${activeEditorName}${separator}${rootName}${separator}${appName}",
 	"http.proxyStrictSSL": false,
 	"editor.insertSpaces": false,
 	"editor.formatOnSave": true,
