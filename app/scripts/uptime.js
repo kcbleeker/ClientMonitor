@@ -3,8 +3,10 @@ var options = {
     hour: 'numeric', minute: 'numeric', second: 'numeric',
     hour12: false
 };
+var myname = "UKMon";
+var postURL = "http://clientdash.azurewebsites.net";
 
-var historyMinutes = 5;
+var historyMinutes = 30;
 var chartKeys = {
     "Router": 1,
     "Lobby": 2
@@ -42,6 +44,7 @@ function setupMonitor(name, targetDivName, url) {
         clearTimeout(timer);
         var timestamp = new Date().toLocaleString('en-ZA', options);
         $("#" + targetDivName + "UpdateTime").text(timestamp);
+        $("#" + targetDivName).removeClass("down");
         $("#" + targetDivName).addClass("up");
         console.log(name + " Message: " + data);
         timer = setTimeout(function () { $("#" + targetDivName).removeClass("up"); }, timeoutMilliSec);
@@ -55,6 +58,7 @@ function setupMonitor(name, targetDivName, url) {
 
     connection.error(function (error) {
         $("#" + targetDivName).removeClass("up");
+        $("#" + targetDivName).addClass("down");
         $("#" + targetDivName + "UpdateTime").text("ERROR");
         console.log(name + " SignalR Error: " + error)
     });
@@ -88,7 +92,7 @@ function setupLogging() {
 }
 
 function cleanupLog() {
-    let Bs = $('#log').children("b"),
+    var Bs = $('#log').children("b"),
         DIVs = $('#log').children("div"),
         maxLength = 200;
     if (Bs.length > maxLength) {
@@ -110,21 +114,27 @@ function testLatency(connection, name) {
         endTime: 0
     }
     $.connection.transports._logic.pingServer(connection, "")
-        .done(() => {
+        .done(function () {
             latencyResult(name);
         })
-        .fail(() => {
+        .fail(function () {
             latencyFail(name);
         });
-    setTimeout(() => {
+    var timer = setTimeout(function () {
         testLatency(connection, name);
-    }, 10000);
+    }, 60000);
+    connection.stateChanged(function (change) {
+        if (change.newState !== $.signalR.connectionState.connected) {
+            clearTimeout(timer);
+        }
+    });
 }
 
 function latencyResult(name) {
     var endTime = new Date().getTime();
     latencyTests[name].endTime = endTime;
     var latency = (latencyTests[name].endTime - latencyTests[name].startTime) / 2;
+    logLatency(name, latency);
     chartAddLatency(name, latency);
 }
 
@@ -167,9 +177,17 @@ function drawChart() {
     chart.draw(data, options);
 }
 
+function logLatency(name, latency) {
+    $.post(postURL, {
+        servername: myname,
+        connectionname: name,
+        latency: latency
+    });
+}
+
 var tableData = [
     ["Item", "Router", "Lobby", "Threshold"]
 ];
-for (var i = 1; i < historyMinutes * 6; i++) {
+for (var i = 1; i < historyMinutes; i++) {
     tableData.push([i.toString(), 0, 0, 200]);
 }

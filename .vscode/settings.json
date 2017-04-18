@@ -1,0 +1,19 @@
+// Project settings
+{
+	"window.title": "${dirty}${activeEditorName}${separator}${rootName}${separator}${appName}",
+	"http.proxyStrictSSL": false,
+	"editor.insertSpaces": false,
+	"editor.formatOnSave": true,
+	"editor.tabSize": 4,
+	"editor.minimap.enabled": true,
+	"editor.minimap.renderCharacters": false,
+	"editor.dragAndDrop": true,
+	"files.eol": "\n",
+	"files.trimTrailingWhitespace": true,
+	"files.exclude": {
+		"**/.git": true,
+		"**/.DS_Store": true,
+		"**/*.gitattributes": true,
+		"**/*.npmrc": true
+	}
+}
