@@ -4,7 +4,7 @@ var options = {
     hour12: false
 };
 var myname = "UKMon";
-var postURL = "http://ukmon.azurewebsites.net:8080";
+var postURL = "http://ukmon.azurewebsites.net";
 
 var historyMinutes = 30;
 var chartKeys = {
@@ -92,7 +92,7 @@ function setupLogging() {
 }
 
 function cleanupLog() {
-    let Bs = $('#log').children("b"),
+    var Bs = $('#log').children("b"),
         DIVs = $('#log').children("div"),
         maxLength = 200;
     if (Bs.length > maxLength) {
@@ -114,13 +114,13 @@ function testLatency(connection, name) {
         endTime: 0
     }
     $.connection.transports._logic.pingServer(connection, "")
-        .done(() => {
+        .done(function () {
             latencyResult(name);
         })
-        .fail(() => {
+        .fail(function () {
             latencyFail(name);
         });
-    var timer = setTimeout(() => {
+    var timer = setTimeout(function () {
         testLatency(connection, name);
     }, 60000);
     connection.stateChanged(function (change) {
