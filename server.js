@@ -1,10 +1,11 @@
-var me = "http://127.0.0.1/";
+var me = "http://127.0.0.1";
 
 // HOST THE MONITOR
 var http = require('http');
 var finalhandler = require('finalhandler');
 var serveStatic = require('serve-static');
 var serve = serveStatic("./app");
+var port = 0;
 var server = http.createServer(function (req, res) {
 	if (req.url === "/") {
 		req.url = "index.htm";
@@ -14,9 +15,19 @@ var server = http.createServer(function (req, res) {
 
 });
 
-server.listen(process.env.PORT || 8080);
-//me = me + (process.env.PORT || 8080);
-console.log("opened me? ", me);
+var nonInts = new RegExp(/[^0-9]/g);
+var envPort = process.env.PORT || 0;
+var containsNonNumeric = nonInts.test(envPort);
+if (containsNonNumeric || !process.env.PORT) {
+	port = 8089;
+	server.listen(port);
+}
+else {
+	port = envPort;
+	server.listen(envPort);
+}
+me += ":" + port.toString() + "/";
+console.log("URL: ", me);
 // RUN THE BROWSER
 function startMonitor() {
 	var driver = require('node-phantom-simple');
@@ -24,7 +35,6 @@ function startMonitor() {
 		return browser.createPage(function (err, page) {
 			return page.open(me, function (err, status) {
 				console.log("opened site? ", status);
-
 				setTimeout(function () {
 					browser.exit();
 					startMonitor();
