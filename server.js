@@ -1,4 +1,4 @@
-var me = "http://127.0.0.1";
+var me = "http://127.0.0.1/";
 
 // HOST THE MONITOR
 var http = require('http');
