@@ -1,4 +1,4 @@
-var me = "http://127.0.0.1:";
+var me = "http://127.0.0.1";
 
 // HOST THE MONITOR
 var http = require('http');
@@ -15,7 +15,7 @@ var server = http.createServer(function (req, res) {
 });
 
 server.listen(process.env.PORT || 8080);
-me = me + (process.env.PORT || 8080);
+//me = me + (process.env.PORT || 8080);
 console.log("opened me? ", me);
 // RUN THE BROWSER
 function startMonitor() {
