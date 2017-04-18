@@ -4,7 +4,7 @@ var options = {
     hour12: false
 };
 var myname = "UKMon";
-var postURL = "http://ukmon.azurewebsites.net";
+var postURL = "http://clientdash.azurewebsites.net";
 
 var historyMinutes = 30;
 var chartKeys = {
